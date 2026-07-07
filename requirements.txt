@@ -1,0 +1,65 @@
+PyQt6>=6.6.0
+psutil>=5.9.0
+
+# KI
+anthropic>=0.25.0
+openai
+google-generativeai
+
+# TTS / STT
+edge-tts>=6.1.9
+elevenlabs
+SpeechRecognition>=3.10.0
+pyaudio>=0.2.14
+sounddevice
+soundfile
+pygame
+
+# Wake-Word
+openwakeword
+onnxruntime
+scipy
+
+# Kamera / Gesicht
+opencv-python
+deepface
+tensorflow
+
+# Web / APIs
+requests>=2.31.0
+httpx
+ddgs
+
+# Dateien / Office
+pymupdf
+python-pptx
+lxml
+openpyxl
+python-docx
+
+# E-Mail / Kalender
+exchangelib
+caldav
+icalendar
+msal
+
+# Browser
+playwright
+
+# YouTube
+yt-dlp
+
+# System
+pyperclip
+pyautogui
+mss
+Pillow
+qrcode
+pycaw
+comtypes
+
+# Spotify
+spotipy
+
+# Flask
+flask

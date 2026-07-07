@@ -1,0 +1,16 @@
+name = "vadox-license"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Nicht-geheime Konfiguration. WORKER_BASE_URL nach dem ersten Deploy mit der
+# tatsaechlichen *.workers.dev-URL (oder eigener Domain) aktualisieren.
+[vars]
+WORKER_BASE_URL = "https://vadox-license.krivonosvadim995.workers.dev"
+STRIPE_PRICE_PRO = "price_1ToS7xA0n2tpbDqC8nH3WnkE"
+STRIPE_PRICE_MONTH = "price_1TpCpbA0n2tpbDqCzGqlJGcT"
+CANCEL_URL = "https://vadox.ai"
+
+# Geheime Werte NIEMALS hier eintragen und NIEMALS committen.
+# Stattdessen im Terminal setzen:
+#   wrangler secret put STRIPE_SECRET_KEY
+#   wrangler secret put VADOX_MASTER_SECRET

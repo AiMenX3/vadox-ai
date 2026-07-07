@@ -1,0 +1,129 @@
+name: Vadox Build — Installer für Windows + macOS + Linux
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+
+  # ── Windows → Vadox_Setup.exe ───────────────────────────────────────────────
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Pakete installieren
+        run: pip install -r requirements.txt pyinstaller
+
+      - name: OpenWakeWord Modelle herunterladen
+        run: python -c "import openwakeword; openwakeword.utils.download_models()"
+
+      - name: PyInstaller — Vadox.exe bauen
+        run: python -m PyInstaller --clean --noconfirm vadox.spec
+
+      - name: Inno Setup installieren
+        run: choco install innosetup -y
+
+      - name: Installer erstellen (Vadox_Setup.exe)
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer_windows.iss
+        shell: pwsh
+
+      - name: Windows Installer hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vadox_Windows_Installer
+          path: dist/Vadox_Setup.exe
+          retention-days: 7
+
+  # ── macOS Apple Silicon (M1/M2/M3) → Vadox_AppleSilicon.dmg ────────────────
+  build-macos-arm:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Homebrew Pakete
+        run: brew install portaudio ffmpeg create-dmg
+
+      - name: Pakete installieren
+        run: pip install -r requirements_macos.txt pyinstaller
+
+      - name: OpenWakeWord Modelle herunterladen
+        run: python -c "import openwakeword; openwakeword.utils.download_models()"
+
+      - name: Playwright installieren
+        run: playwright install chromium
+
+      - name: PyInstaller — Vadox.app bauen
+        run: python -m PyInstaller --clean --noconfirm vadox_macos.spec
+
+      - name: DMG erstellen (Vadox_AppleSilicon.dmg)
+        run: |
+          create-dmg \
+            --volname "Vadox" \
+            --window-pos 200 120 \
+            --window-size 800 450 \
+            --icon-size 120 \
+            --icon "Vadox.app" 200 190 \
+            --hide-extension "Vadox.app" \
+            --app-drop-link 600 190 \
+            "dist/Vadox_AppleSilicon.dmg" \
+            "dist/Vadox.app" || true
+
+      - name: macOS Apple Silicon DMG hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vadox_macOS_AppleSilicon_DMG
+          path: dist/Vadox_AppleSilicon.dmg
+          retention-days: 7
+
+  # ── Linux → Vadox.AppImage ──────────────────────────────────────────────────
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: System-Pakete
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y portaudio19-dev ffmpeg libgl1 libasound2-dev \
+            libxcb-xinerama0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
+            libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xkb1 \
+            libxkbcommon-x11-0 libdbus-1-3 wget fuse libfuse2
+
+      - name: Pakete installieren
+        run: pip install -r requirements_linux.txt pyinstaller
+
+      - name: OpenWakeWord Modelle herunterladen
+        run: python -c "import openwakeword; openwakeword.utils.download_models()"
+
+      - name: Playwright installieren
+        run: playwright install chromium
+
+      - name: PyInstaller — Vadox bauen
+        run: python -m PyInstaller --clean --noconfirm vadox_linux.spec
+
+      - name: AppImage erstellen
+        run: python build_linux.py
+        env:
+          APPIMAGE_EXTRACT_AND_RUN: "1"
+
+      - name: Linux AppImage hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vadox_Linux_AppImage
+          path: dist/Vadox.AppImage
+          retention-days: 7

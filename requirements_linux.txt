@@ -1,0 +1,40 @@
+# Vadox Linux Requirements
+# sudo apt install python3-pip portaudio19-dev ffmpeg libgl1 libasound2-dev
+# pip install -r requirements_linux.txt
+
+anthropic
+openai
+google-generativeai
+PyQt6
+edge-tts
+elevenlabs
+SpeechRecognition
+pyaudio
+sounddevice
+soundfile
+pygame
+openwakeword
+onnxruntime
+opencv-python
+deepface
+tensorflow
+requests
+httpx
+ddgs
+pymupdf
+python-pptx
+lxml
+exchangelib
+caldav
+icalendar
+msal
+playwright
+yt-dlp
+psutil
+pyperclip
+pyautogui
+Pillow
+qrcode
+spotipy
+flask
+pyinstaller

@@ -1,0 +1,65 @@
+# Vadox macOS Intel Requirements (x86_64 / macos-13)
+
+# KI
+anthropic
+openai
+google-generativeai
+
+# UI
+PyQt6
+
+# TTS / STT
+edge-tts
+elevenlabs
+SpeechRecognition
+pyaudio
+sounddevice
+soundfile
+pygame
+
+# Wake-Word
+openwakeword
+onnxruntime
+scipy
+
+# Kamera / Gesicht
+opencv-python
+deepface
+tensorflow
+
+# Web / APIs
+requests
+httpx
+ddgs
+
+# Dateien / Office
+pymupdf
+python-pptx
+lxml
+openpyxl
+python-docx
+
+# E-Mail / Kalender
+exchangelib
+caldav
+icalendar
+msal
+
+# Browser
+playwright
+
+# YouTube
+yt-dlp
+
+# System
+psutil
+pyperclip
+pyautogui
+Pillow
+qrcode
+
+# Spotify
+spotipy
+
+# Flask
+flask
