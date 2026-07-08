@@ -38,6 +38,14 @@ def main():
     window = MainWindow()
     window.show()
 
+    # Systemprüfung: fehlende Voraussetzungen (VLC, Wake-Word-Modelle …) freundlich
+    # anzeigen und wo moeglich automatisch nachinstallieren. Blockiert die App nicht.
+    try:
+        from vadox.ui.system_check_dialog import run_system_check
+        run_system_check(window)
+    except Exception as e:
+        print(f"[SystemCheck] {e}")
+
     # Trial-Countdown im Hauptfenster anzeigen
     _start_trial_timer(window)
 
