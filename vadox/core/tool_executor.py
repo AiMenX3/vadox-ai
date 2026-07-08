@@ -140,6 +140,16 @@ def execute_tool(name: str, inputs: dict) -> str:
             from vadox.tools.youtube import open_youtube
             return open_youtube(inputs.get("query", ""))
 
+        # ── Coding-Assistent ──────────────────────────────────────────────────
+        elif name == "write_code":
+            from vadox.core import ui_bridge
+            task = inputs.get("task", "")
+            lang = inputs.get("language", "")
+            opened = ui_bridge.open_coding(task, lang)
+            if not opened:
+                return "Coding-Assistent ist nur mit geoeffneter Vadox-Oberflaeche verfuegbar."
+            return f"Ich oeffne den Coding-Assistenten und programmiere: {task}"
+
         # ── Live-Webcams ──────────────────────────────────────────────────────
         elif name == "show_webcams":
             from vadox.tools.webcams import open_webcams

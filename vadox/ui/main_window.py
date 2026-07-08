@@ -282,6 +282,7 @@ class MainWindow(QMainWindow):
     _api_test_signal    = pyqtSignal(bool, str, str, str, str)
     _wake_word_signal   = pyqtSignal()
     _webcam_signal      = pyqtSignal(str)
+    _coding_signal      = pyqtSignal(str, str)
 
     def __init__(self):
         super().__init__()
@@ -1589,10 +1590,12 @@ class MainWindow(QMainWindow):
         self._api_test_signal.connect(self._on_api_key_tested)
         self._wake_word_signal.connect(self._wake_word_activate)
         self._webcam_signal.connect(self._open_webcam_panel)
+        self._coding_signal.connect(self._open_coding_with_task)
 
-        # Tools (Hintergrund-Thread) koennen ueber die Bruecke das Webcam-Panel oeffnen
+        # Tools (Hintergrund-Thread) koennen ueber die Bruecke Panels oeffnen
         from vadox.core import ui_bridge
         ui_bridge.set_webcam_opener(lambda city: self._webcam_signal.emit(city or ""))
+        ui_bridge.set_coding_opener(lambda task, lang: self._coding_signal.emit(task or "", lang or ""))
 
     def _open_webcam_panel(self, location: str = ""):
         try:
@@ -1668,6 +1671,21 @@ class MainWindow(QMainWindow):
         except Exception as e:
             import traceback; traceback.print_exc()
             QMessageBox.warning(self, "Coding", f"Fehler: {e}")
+
+    def _open_coding_with_task(self, task: str, language: str = ""):
+        """Oeffnet den Coding-Assistenten und startet automatisch die
+        Generierung — ausgeloest per Sprach-/Textbefehl ('programmiere ...')."""
+        try:
+            from vadox.ui.coding_panel import CodingPanel
+            self._coding_panel = CodingPanel(self)   # Referenz halten (nicht modal blockieren)
+            self._coding_panel.show()
+            self._coding_panel.raise_()
+            self._coding_panel.activateWindow()
+            if task:
+                self._coding_panel.start_generation(task, language)
+        except Exception as e:
+            import traceback; traceback.print_exc()
+            self._log.log("ERR", f"Coding-Auto-Start Fehler: {e}")
 
     def _open_translator_panel(self):
         try:

@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
     QFrame, QWidget, QTextEdit, QComboBox, QTabWidget,
     QLineEdit, QFileDialog, QScrollArea, QSplitter
 )
-from PyQt6.QtCore import Qt, QThread, pyqtSignal
+from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
 from PyQt6.QtGui import QFont
 import threading
 
@@ -124,9 +124,10 @@ class CodingPanel(QDialog):
         """)
         tabs.addTab(self._tab_explain(),   "🔍  ERKLÄREN")
         tabs.addTab(self._tab_debug(),     "🐛  DEBUGGEN")
-        tabs.addTab(self._tab_generate(),  "⚡  GENERIEREN")
+        self._gen_tab_index = tabs.addTab(self._tab_generate(),  "⚡  GENERIEREN")
         tabs.addTab(self._tab_review(),    "✅  REVIEW")
         tabs.addTab(self._tab_convert(),   "🔄  UMWANDELN")
+        self._tabs = tabs
         lay.addWidget(tabs, stretch=1)
 
     def _code_editor(self, placeholder="Code hier einfügen...") -> QTextEdit:
@@ -389,7 +390,26 @@ class CodingPanel(QDialog):
             )
             self._run_worker(prompt, result, btn)
         btn.clicked.connect(run)
+
+        # Referenzen fuer programmatischen Auto-Start (per Sprachbefehl)
+        self._gen_desc = desc_input
+        self._gen_lang = lang
+        self._gen_run  = run
         return w
+
+    def start_generation(self, task: str, language: str = ""):
+        """Oeffnet den Generieren-Tab, fuellt die Aufgabe ein und startet die
+        Code-Generierung sofort — fuer den Auto-Start per Sprach-/Textbefehl."""
+        try:
+            self._tabs.setCurrentIndex(self._gen_tab_index)
+            if language:
+                idx = self._gen_lang.findText(language, Qt.MatchFlag.MatchContains)
+                if idx >= 0:
+                    self._gen_lang.setCurrentIndex(idx)
+            self._gen_desc.setPlainText(task)
+            QTimer.singleShot(400, self._gen_run)
+        except Exception as e:
+            print(f"[CodingPanel] Auto-Start Fehler: {e}")
 
     # ── Tab: Review ───────────────────────────────────────────────────────────
     def _tab_review(self) -> QWidget:

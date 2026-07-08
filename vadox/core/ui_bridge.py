@@ -9,6 +9,7 @@ emittieren (Qt marshallt das automatisch sicher in den Haupt-Thread).
 """
 
 _webcam_opener = None
+_coding_opener = None
 
 
 def set_webcam_opener(fn):
@@ -23,4 +24,18 @@ def open_webcams(city: str = "") -> bool:
     if _webcam_opener is None:
         return False
     _webcam_opener(city)
+    return True
+
+
+def set_coding_opener(fn):
+    """Vom Hauptfenster aufgerufen. fn(task: str, language: str) oeffnet das
+    Coding-Panel und startet die Code-Generierung."""
+    global _coding_opener
+    _coding_opener = fn
+
+
+def open_coding(task: str = "", language: str = "") -> bool:
+    if _coding_opener is None:
+        return False
+    _coding_opener(task, language)
     return True

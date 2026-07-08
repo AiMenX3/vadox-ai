@@ -573,6 +573,19 @@ TOOLS = [
             "required": ["query"]
         }
     },
+    # ── Coding-Assistent ──────────────────────────────────────────────────────
+    {
+        "name": "write_code",
+        "description": "Öffnet den Coding-Assistenten und generiert sofort Code für eine Programmieraufgabe. Nutze dieses Tool wenn der Nutzer möchte dass du etwas programmierst, entwickelst oder Code schreibst (z.B. 'programmiere eine API-Schnittstelle', 'schreib mir eine Funktion die...', 'entwickle ein Skript für...').",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "task": {"type": "string", "description": "Was programmiert werden soll — die vollständige Aufgabenbeschreibung, z.B. 'Eine REST-API-Schnittstelle für Nutzer-Login mit JWT-Token'"},
+                "language": {"type": "string", "description": "Programmiersprache, z.B. 'Python', 'JavaScript', 'Java'. Leer lassen für automatische Wahl.", "default": ""}
+            },
+            "required": ["task"]
+        }
+    },
     # ── Live-Webcams ──────────────────────────────────────────────────────────
     {
         "name": "show_webcams",
