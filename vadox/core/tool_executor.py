@@ -140,6 +140,11 @@ def execute_tool(name: str, inputs: dict) -> str:
             from vadox.tools.youtube import open_youtube
             return open_youtube(inputs.get("query", ""))
 
+        # ── Live-Webcams ──────────────────────────────────────────────────────
+        elif name == "show_webcams":
+            from vadox.tools.webcams import open_webcams
+            return open_webcams(inputs.get("location", ""))
+
         # ── Flugsuche ─────────────────────────────────────────────────────────
         elif name == "search_flights":
             from vadox.tools.flights import search_flights

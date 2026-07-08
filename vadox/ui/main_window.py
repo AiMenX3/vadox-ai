@@ -281,6 +281,7 @@ class MainWindow(QMainWindow):
     _agent_result_signal = pyqtSignal(str, str)
     _api_test_signal    = pyqtSignal(bool, str, str, str, str)
     _wake_word_signal   = pyqtSignal()
+    _webcam_signal      = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
@@ -1570,6 +1571,20 @@ class MainWindow(QMainWindow):
         self._agent_result_signal.connect(self._on_agent_result_ui)
         self._api_test_signal.connect(self._on_api_key_tested)
         self._wake_word_signal.connect(self._wake_word_activate)
+        self._webcam_signal.connect(self._open_webcam_panel)
+
+        # Tools (Hintergrund-Thread) koennen ueber die Bruecke das Webcam-Panel oeffnen
+        from vadox.core import ui_bridge
+        ui_bridge.set_webcam_opener(lambda city: self._webcam_signal.emit(city or ""))
+
+    def _open_webcam_panel(self, location: str = ""):
+        try:
+            from vadox.ui.webcam_panel import WebcamPanel
+            dlg = WebcamPanel(self, location=location)
+            dlg.show()
+        except Exception as e:
+            import traceback; traceback.print_exc()
+            self._log.log("ERR", f"Webcam-Fenster Fehler: {e}")
 
     def _on_agent_result_ui(self, agent_name: str, result: str):
         self._nav_switch(0)

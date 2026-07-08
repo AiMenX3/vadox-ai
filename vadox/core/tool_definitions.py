@@ -573,6 +573,17 @@ TOOLS = [
             "required": ["query"]
         }
     },
+    # ── Live-Webcams ──────────────────────────────────────────────────────────
+    {
+        "name": "show_webcams",
+        "description": "Öffnet ein Fenster mit bis zu 6 öffentlichen Live-Webcams aus Städten weltweit (z.B. New York, Berlin, Venedig, Tokio, Paris, Dubai). Nutze dieses Tool wenn der Nutzer Live-Kameras, Webcams oder einen Live-Blick auf eine Stadt sehen möchte. Ohne Ort werden Kameras aus aller Welt gezeigt.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "location": {"type": "string", "description": "Stadt oder Ort, z.B. 'New York', 'Berlin', 'Tokio'. Leer lassen für eine gemischte Welt-Auswahl.", "default": ""}
+            }
+        }
+    },
     # ── Flugsuche ─────────────────────────────────────────────────────────────
     {
         "name": "search_flights",

@@ -216,6 +216,16 @@ class SettingsPanel(QDialog):
 
         lay.addWidget(_sep())
 
+        lay.addWidget(self._section("WINDY API-KEY (für Live-Webcams)"))
+        self._windy_key_input = self._input("Windy API-Key eintragen", echo_password=True,
+                                             value=self._cfg.get("windy_api_key", ""))
+        lay.addWidget(self._windy_key_input)
+        windy_hint = _lbl("Kostenlos unter api.windy.com/keys registrieren — für die Live-Webcam-Funktion.", size=9, color=TEXT_D)
+        windy_hint.setWordWrap(True)
+        lay.addWidget(windy_hint)
+
+        lay.addWidget(_sep())
+
         lay.addWidget(self._section("PICOVOICE KEY (für 'Hey Vadox' Wake-Word)"))
         self._picovoice_key_input = self._input("Picovoice Access Key eintragen", echo_password=True,
                                                  value=self._cfg.get("picovoice_key", ""))
@@ -408,6 +418,10 @@ class SettingsPanel(QDialog):
         self._tts_check = QCheckBox("Vadox spricht Antworten laut aus")
         self._tts_check.setChecked(self._cfg.get("tts_enabled", True))
         lay.addWidget(self._tts_check)
+
+        self._tts_auto_lang_check = QCheckBox("Stimme automatisch an die Sprache anpassen (international)")
+        self._tts_auto_lang_check.setChecked(self._cfg.get("tts_auto_language", True))
+        lay.addWidget(self._tts_auto_lang_check)
 
         lay.addWidget(self._section("STIMME AUSWÄHLEN"))
         self._voice_combo = QComboBox()
@@ -1879,8 +1893,10 @@ class SettingsPanel(QDialog):
         cfg["model"]           = self._model_combo.currentData() or ""
         cfg["pexels_api_key"]  = self._pexels_key_input.text().strip()
         cfg["picovoice_key"]   = self._picovoice_key_input.text().strip()
+        cfg["windy_api_key"]   = self._windy_key_input.text().strip()
         cfg["voice"]                = self._voice_combo.currentData()
         cfg["tts_enabled"]          = self._tts_check.isChecked()
+        cfg["tts_auto_language"]    = self._tts_auto_lang_check.isChecked()
         cfg["stt_enabled"]          = self._stt_check.isChecked()
         cfg["language"]             = self._lang_combo.currentData()
         cfg["elevenlabs_enabled"]   = self._eleven_check.isChecked()

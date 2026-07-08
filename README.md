@@ -10,6 +10,8 @@
 - 🌐 Web-Automatisierung & Websuche
 - 📧 E-Mail, Kalender, Smart-Home, Übersetzer, Gesichtserkennung u.v.m.
 - 🛠️ Selbstlernend: Vadox kann sich bei Bedarf eigene neue Tools schreiben
+- 📹 Live-Webcams: bis zu 6 echte Live-Streams aus Städten weltweit per Sprachbefehl
+- 🌍 Internationale Sprachausgabe: passt die Stimme automatisch an die Sprache an
 - 🖥️ Läuft auf **Windows**, **macOS** und **Linux**
 
 ---
@@ -30,6 +32,8 @@ python main.py
 
 Voraussetzung: [Python 3.11+](https://www.python.org/downloads/) (beim Installieren "Add to PATH" anhaken ✅) und [Git](https://git-scm.com/downloads).
 
+Für die Live-Webcam-Funktion (echtes Live-Video) zusätzlich den kostenlosen [VLC Media Player](https://www.videolan.org/vlc/) installieren.
+
 </details>
 
 <details>
@@ -39,8 +43,9 @@ Voraussetzung: [Python 3.11+](https://www.python.org/downloads/) (beim Installie
 # Homebrew installieren, falls noch nicht vorhanden:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Benötigte Systempakete:
+# Benötigte Systempakete (VLC für die Live-Webcam-Funktion):
 brew install portaudio ffmpeg
+brew install --cask vlc
 
 git clone https://github.com/AiMenX3/vadox-ai.git
 cd vadox-ai
@@ -61,7 +66,7 @@ python main.py
 <summary><b>🐧 Linux</b></summary>
 
 ```bash
-sudo apt install python3-pip portaudio19-dev ffmpeg libgl1 libasound2-dev
+sudo apt install python3-pip portaudio19-dev ffmpeg libgl1 libasound2-dev vlc
 
 git clone https://github.com/AiMenX3/vadox-ai.git
 cd vadox-ai

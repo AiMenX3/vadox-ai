@@ -50,6 +50,48 @@ def _play_audio_file(path: str, stop_check=None):
         print(f"[Audio-Fehler] {e}")
 
 
+# Eine gute muttersprachliche Edge-TTS-Stimme pro Sprache. Damit klingt die
+# Ausgabe international richtig, statt z.B. Englisch mit deutschem Akzent.
+_LANG_VOICE = {
+    "de": "de-DE-KatjaNeural",
+    "en": "en-US-JennyNeural",
+    "es": "es-ES-ElviraNeural",
+    "fr": "fr-FR-DeniseNeural",
+    "it": "it-IT-ElsaNeural",
+    "pt": "pt-BR-FranciscaNeural",
+    "nl": "nl-NL-ColetteNeural",
+    "ru": "ru-RU-SvetlanaNeural",
+    "pl": "pl-PL-ZofiaNeural",
+    "tr": "tr-TR-EmelNeural",
+    "ar": "ar-SA-ZariyahNeural",
+    "ja": "ja-JP-NanamiNeural",
+    "ko": "ko-KR-SunHiNeural",
+    "zh-cn": "zh-CN-XiaoxiaoNeural",
+    "zh": "zh-CN-XiaoxiaoNeural",
+    "sv": "sv-SE-SofieNeural",
+    "da": "da-DK-ChristelNeural",
+    "no": "nb-NO-PernilleNeural",
+    "fi": "fi-FI-NooraNeural",
+    "cs": "cs-CZ-VlastaNeural",
+    "el": "el-GR-AthinaNeural",
+    "uk": "uk-UA-PolinaNeural",
+    "ro": "ro-RO-AlinaNeural",
+    "hu": "hu-HU-NoemiNeural",
+    "hi": "hi-IN-SwaraNeural",
+}
+
+
+def detect_voice(text: str, fallback: str) -> str:
+    """Erkennt die Sprache des Textes und gibt eine passende Edge-Stimme zurueck.
+    Bei Unsicherheit/unbekannter Sprache wird die Fallback-Stimme genutzt."""
+    try:
+        from langdetect import detect
+        code = detect(text).lower()
+        return _LANG_VOICE.get(code, _LANG_VOICE.get(code.split("-")[0], fallback))
+    except Exception:
+        return fallback
+
+
 class TTSEngine:
     def __init__(self, voice: str = "de-DE-KatjaNeural"):
         self.voice       = voice          # Edge-TTS Stimme (Fallback)
@@ -61,6 +103,7 @@ class TTSEngine:
         self._eleven_key   = ""
         self._eleven_voice = "W2KR2ct3bRh7HcawFJB4"  # Vadox JARVIS-Stimme
         self._use_eleven   = False
+        self._auto_language = True
         self._load_settings()
 
     def _load_settings(self):
@@ -72,6 +115,8 @@ class TTSEngine:
             self._use_eleven   = bool(self._eleven_key) and cfg.get("elevenlabs_enabled", False)
             # Edge-TTS Stimme aus Einstellungen
             self.voice = cfg.get("tts_voice", "de-DE-KatjaNeural")
+            # Automatisch passende Stimme zur erkannten Sprache (international)
+            self._auto_language = cfg.get("tts_auto_language", True)
         except Exception:
             pass
 
@@ -231,6 +276,10 @@ class TTSEngine:
         try:
             import edge_tts
 
+            # Automatisch muttersprachliche Stimme zur erkannten Sprache waehlen,
+            # damit z.B. englischer Text nicht mit deutschem Akzent klingt.
+            voice = detect_voice(text, self.voice) if self._auto_language else self.voice
+
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
 
@@ -238,7 +287,7 @@ class TTSEngine:
                 tmp = tempfile.NamedTemporaryFile(suffix=".mp3", delete=False)
                 p   = tmp.name
                 tmp.close()
-                communicate = edge_tts.Communicate(text, self.voice)
+                communicate = edge_tts.Communicate(text, voice)
                 with open(p, "wb") as f:
                     async for chunk in communicate.stream():
                         if chunk["type"] == "audio":

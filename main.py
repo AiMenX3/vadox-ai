@@ -3,6 +3,7 @@ import traceback
 from pathlib import Path
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QIcon
+
 from vadox.core.license import check, get_trial_info
 from vadox.ui.license_dialog import LicenseDialog
 from vadox.ui.main_window import MainWindow

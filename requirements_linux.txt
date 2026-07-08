@@ -38,3 +38,8 @@ qrcode
 spotipy
 flask
 pyinstaller
+
+# Live-Webcams (echtes Live-Video) + internationale Sprachausgabe
+# Hinweis: VLC Media Player muss installiert sein (videolan.org)
+python-vlc
+langdetect
