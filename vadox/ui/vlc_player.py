@@ -43,6 +43,7 @@ class VlcTile(QFrame):
         super().__init__(parent)
         self._url = stream_url
         self._player = None
+        self._stopped = False
         self.setStyleSheet("background:#000;")
         self.setMinimumHeight(240)
         # Klick/Interaktion an das native Fenster durchreichen
@@ -52,6 +53,10 @@ class VlcTile(QFrame):
         QTimer.singleShot(150, self._start)
 
     def _start(self):
+        # Wurde die Kachel schon geschlossen, bevor der Timer feuerte? Dann NICHT
+        # mehr starten — sonst spielt ein verwaister Player weiter (Ton-Bug).
+        if self._stopped:
+            return
         inst = _get_instance()
         if inst is None or not self._url:
             return
@@ -75,9 +80,16 @@ class VlcTile(QFrame):
             p.set_nsobject(wid)
 
     def stop(self):
+        # Merken, dass gestoppt wurde — verhindert einen spaeter feuernden
+        # _start-Timer (sonst verwaister Player mit weiterlaufendem Ton).
+        self._stopped = True
         if self._player is not None:
             try:
                 self._player.stop()
+            except Exception:
+                pass
+            try:
+                self._player.release()   # Ressourcen/Audio vollstaendig freigeben
             except Exception:
                 pass
             self._player = None

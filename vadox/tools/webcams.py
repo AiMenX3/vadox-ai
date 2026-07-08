@@ -83,7 +83,10 @@ def _resolve_stream(video_id: str) -> str:
         import yt_dlp
         with yt_dlp.YoutubeDL({
             "quiet": True, "no_warnings": True,
-            "format": "best[height<=720]/best",
+            # Niedrige Aufloesung fuer die kleinen Grid-Kacheln: 6 gleichzeitige
+            # HD-Streams koennen schwaechere Rechner ueberlasten/einfrieren.
+            # 480p reicht fuer die Vorschau und spart massiv CPU/GPU/RAM.
+            "format": "best[height<=480]/best[height<=720]/best",
         }) as ydl:
             info = ydl.extract_info(
                 f"https://www.youtube.com/watch?v={video_id}", download=False

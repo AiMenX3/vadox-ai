@@ -49,6 +49,7 @@ class WebcamPanel(QDialog):
         self.setStyleSheet(f"background:{BG};")
         self._worker = None
         self._tiles = []
+        self._closed = False
         self._current_location = location or ""
         self._build()
         self.load_location(location)
@@ -133,6 +134,8 @@ class WebcamPanel(QDialog):
         self._worker.start()
 
     def _on_loaded(self, data: dict):
+        if self._closed:
+            return  # Fenster wurde waehrend des Ladens geschlossen — keine Player mehr starten
         self._combo.setEnabled(True)
         self._title.setText(data.get("title", "Live-Kameras"))
         cams = data.get("cams", [])
@@ -180,5 +183,6 @@ class WebcamPanel(QDialog):
         return box
 
     def closeEvent(self, event):
+        self._closed = True
         self._clear_grid()
         super().closeEvent(event)

@@ -1600,8 +1600,16 @@ class MainWindow(QMainWindow):
     def _open_webcam_panel(self, location: str = ""):
         try:
             from vadox.ui.webcam_panel import WebcamPanel
-            dlg = WebcamPanel(self, location=location)
-            dlg.show()
+            # Evtl. noch offenes Panel schliessen, damit nie zwei gleichzeitig
+            # laufen (sonst laeuft Ton doppelt/weiter). Referenz halten.
+            old = getattr(self, "_webcam_panel", None)
+            if old is not None:
+                try:
+                    old.close()
+                except Exception:
+                    pass
+            self._webcam_panel = WebcamPanel(self, location=location)
+            self._webcam_panel.show()
         except Exception as e:
             import traceback; traceback.print_exc()
             self._log.log("ERR", f"Webcam-Fenster Fehler: {e}")
