@@ -12,19 +12,22 @@ class RingWidget(QWidget):
         self.speeds = [0.8, -0.5, 0.3]
         self.listening = False
         self.speaking = False
+        self.thinking = False
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._tick)
         self.timer.start(16)
 
     def _tick(self):
+        boost = 3.0 if self.thinking else 1.0   # beim "Nachdenken" schneller drehen
         for i in range(3):
-            self.angles[i] = (self.angles[i] + self.speeds[i]) % 360
+            self.angles[i] = (self.angles[i] + self.speeds[i] * boost) % 360
         self.update()
 
-    def set_state(self, listening=False, speaking=False):
+    def set_state(self, listening=False, speaking=False, thinking=False):
         self.listening = listening
         self.speaking = speaking
+        self.thinking = thinking
 
     def paintEvent(self, event):
         painter = QPainter(self)

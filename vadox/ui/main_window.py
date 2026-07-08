@@ -298,6 +298,8 @@ class MainWindow(QMainWindow):
         self._speaking  = False
         self._listening = False
         self._voice_followup = False  # True solange ein Sprachgespräch aktiv ist (10s Folgefenster ohne "Hey Jarvis")
+        self._processing     = False  # True waehrend die KI eine Antwort erarbeitet (fuer JARVIS-HUD)
+        self._last_user_msg  = ""
         self._current_ai_bubble: ChatBubble | None = None
         self._full_ai_response = ""
 
@@ -481,6 +483,20 @@ class MainWindow(QMainWindow):
         """)
         settings_btn.clicked.connect(self._open_settings)
 
+        # JARVIS-Modus-Button (cinematischer HUD-Vollbildmodus)
+        hud_btn = QPushButton("◎")
+        hud_btn.setFixedSize(32, 32)
+        hud_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        hud_btn.setToolTip("JARVIS-Modus (Vollbild-HUD)")
+        hud_btn.setStyleSheet(f"""
+            QPushButton {{
+                background:{BG_CARD}; border:1px solid {BORDER2};
+                color:{CYAN_DIM}; font-size:16px; border-radius:6px;
+            }}
+            QPushButton:hover {{ border-color:{CYAN}; color:{CYAN}; background:#0a1e35; }}
+        """)
+        hud_btn.clicked.connect(self._open_hud)
+
         # Clock
         clock_col = QVBoxLayout()
         clock_col.setSpacing(0)
@@ -499,6 +515,7 @@ class MainWindow(QMainWindow):
         lay.addWidget(sep2)
         lay.addWidget(wake_box)
         lay.addWidget(status_box)
+        lay.addWidget(hud_btn)
         lay.addWidget(settings_btn)
         lay.addLayout(clock_col)
         return bar
@@ -1612,6 +1629,19 @@ class MainWindow(QMainWindow):
         dlg = PhonePanel(self)
         dlg.exec()
 
+    def _open_hud(self):
+        """Wechselt in den cinematischen JARVIS-Vollbild-Modus. Das klassische
+        UI bleibt bestehen und wird beim Schliessen des HUD wieder sichtbar."""
+        try:
+            from vadox.ui.hud_window import HudWindow
+            if getattr(self, "_hud", None) is None:
+                self._hud = HudWindow(self)
+                self._hud.finished.connect(lambda *_: setattr(self, "_hud", None))
+            self._hud.showFullScreen()
+        except Exception as e:
+            import traceback; traceback.print_exc()
+            self._log.log("ERR", f"JARVIS-Modus Fehler: {e}")
+
     def _open_settings(self):
         try:
             panel = SettingsPanel(self)
@@ -2021,6 +2051,9 @@ class MainWindow(QMainWindow):
         self._log.log("AI", f"Verarbeite: {final_text[:40]}...")
         self._current_ai_bubble = None
         self._full_ai_response  = ""
+        # Fuer den JARVIS-HUD: laufende Verarbeitung + letzte Nutzer-Frage merken
+        self._processing   = True
+        self._last_user_msg = text or (f"📎 {Path(attached).name}" if attached else "")
         self._sentence_queue.reset()
         self._ai.chat(
             final_text,
@@ -2104,6 +2137,7 @@ class MainWindow(QMainWindow):
 
     def _on_chat_done(self, full_response: str):
         self._log.log("AI", "Antwort erhalten.")
+        self._processing = False
         self._set_speaking(True)
         self._sentence_queue.finish(on_done=lambda: self._tts_done_signal.emit())
 

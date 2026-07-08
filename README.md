@@ -12,6 +12,7 @@
 - 🛠️ Selbstlernend: Vadox kann sich bei Bedarf eigene neue Tools schreiben
 - 📹 Live-Webcams: bis zu 6 echte Live-Streams aus Städten weltweit per Sprachbefehl
 - 🌍 Internationale Sprachausgabe: passt die Stimme automatisch an die Sprache an
+- 🎬 JARVIS-Modus: cinematischer Vollbild-HUD mit reaktivem Energie-Ring, Live-Uhr/System-Werten und Tool-Animationen
 - 🖥️ Läuft auf **Windows**, **macOS** und **Linux**
 
 ---
