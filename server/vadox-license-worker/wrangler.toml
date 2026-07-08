@@ -6,8 +6,8 @@ compatibility_date = "2024-11-01"
 # tatsaechlichen *.workers.dev-URL (oder eigener Domain) aktualisieren.
 [vars]
 WORKER_BASE_URL = "https://vadox-license.krivonosvadim995.workers.dev"
-STRIPE_PRICE_PRO = "price_1ToS7xA0n2tpbDqC8nH3WnkE"
-STRIPE_PRICE_MONTH = "price_1TpCpbA0n2tpbDqCzGqlJGcT"
+STRIPE_PRICE_PRO = "price_1TqxCLA0n2tpbDqCTlN8uHmZ"
+STRIPE_PRICE_MONTH = "price_1TqxC7A0n2tpbDqCrU95r2s2"
 CANCEL_URL = "https://vadox.ai"
 
 # Geheime Werte NIEMALS hier eintragen und NIEMALS committen.

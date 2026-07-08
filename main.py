@@ -86,10 +86,10 @@ def _start_trial_timer(window):
         # Warnungen
         if secs <= 3600 and not warned_1h:
             warned_1h = True
-            _show_warning(window, f"⚠  Noch 1 Stunde im Trial!\n\nJetzt upgraden für nur 197 € (Lifetime).")
+            _show_warning(window, f"⚠  Noch 1 Stunde im Trial!\n\nJetzt upgraden für nur 67 € (Lifetime).")
         elif secs <= 21600 and not warned_6h:
             warned_6h = True
-            _show_warning(window, f"⚠  Noch 6 Stunden im Trial.\n\nNach Ablauf ist Vadox PRO für 197 € (Lifetime) verfügbar.")
+            _show_warning(window, f"⚠  Noch 6 Stunden im Trial.\n\nNach Ablauf ist Vadox PRO für 67 € (Lifetime) verfügbar.")
 
     timer = QTimer(window)
     timer.timeout.connect(_tick)

@@ -130,7 +130,7 @@ class LicenseDialog(QDialog):
         lay.addWidget(trial_btn)
 
         # 1-Monat Button
-        month_btn = QPushButton("🔁   VADOX 1 MONAT  —  67 €  (Jetzt kaufen)")
+        month_btn = QPushButton("🔁   VADOX 1 MONAT  —  9,95 €  (Jetzt kaufen)")
         month_btn.setFixedHeight(34)
         month_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         month_btn.setFont(QFont("Courier New", 10, QFont.Weight.Bold))
@@ -145,7 +145,7 @@ class LicenseDialog(QDialog):
         lay.addWidget(month_btn)
 
         # Direkt kaufen Button
-        buy_btn = QPushButton("⚡   VADOX PRO  —  197 €  Lifetime  (Jetzt kaufen)")
+        buy_btn = QPushButton("⚡   VADOX PRO  —  67 €  Lifetime  (Jetzt kaufen)")
         buy_btn.setFixedHeight(40)
         buy_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         buy_btn.setFont(QFont("Courier New", 10, QFont.Weight.Bold))
@@ -244,7 +244,7 @@ class LicenseDialog(QDialog):
         lay.addSpacing(6)
 
         # 1-Monat Button
-        month_btn2 = QPushButton("🔁   VADOX 1 MONAT  —  67 €  —  Jetzt kaufen")
+        month_btn2 = QPushButton("🔁   VADOX 1 MONAT  —  9,95 €  —  Jetzt kaufen")
         month_btn2.setFixedHeight(40)
         month_btn2.setCursor(Qt.CursorShape.PointingHandCursor)
         month_btn2.setFont(QFont("Courier New", 10, QFont.Weight.Bold))
@@ -261,7 +261,7 @@ class LicenseDialog(QDialog):
         lay.addSpacing(4)
 
         # PRO Button
-        pro_btn = QPushButton("⚡   VADOX PRO  —  197 €  Lifetime  —  Jetzt kaufen")
+        pro_btn = QPushButton("⚡   VADOX PRO  —  67 €  Lifetime  —  Jetzt kaufen")
         pro_btn.setFixedHeight(52)
         pro_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         pro_btn.setFont(QFont("Courier New", 11, QFont.Weight.Bold))

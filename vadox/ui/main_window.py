@@ -571,7 +571,7 @@ class MainWindow(QMainWindow):
             txt = label(f"✓  VADOX 1 MONAT — noch {days_left} Tage", size=9,
                         color=CYAN, spacing=1)
 
-            month_btn = QPushButton("🔁 Weiteren Monat — 67 €")
+            month_btn = QPushButton("🔁 Weiteren Monat — 9,95 €")
             month_btn.setFixedHeight(20)
             month_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             month_btn.setFont(QFont("Courier New", 8, QFont.Weight.Bold))
@@ -584,7 +584,7 @@ class MainWindow(QMainWindow):
             """)
             month_btn.clicked.connect(lambda: self._buy_plan("month"))
 
-            lifetime_btn = QPushButton("⚡ Lifetime upgraden — 197 €")
+            lifetime_btn = QPushButton("⚡ Lifetime upgraden — 67 €")
             lifetime_btn.setFixedHeight(20)
             lifetime_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             lifetime_btn.setFont(QFont("Courier New", 8, QFont.Weight.Bold))
@@ -613,7 +613,7 @@ class MainWindow(QMainWindow):
             dot.setStyleSheet("background:#ffaa00; border-radius:3px;")
             self._trial_lbl = label("⏱  TRIAL", size=9, color="#ffaa00", spacing=1)
 
-            month_btn = QPushButton("🔁 1 Monat — 67 €")
+            month_btn = QPushButton("🔁 1 Monat — 9,95 €")
             month_btn.setFixedHeight(20)
             month_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             month_btn.setFont(QFont("Courier New", 8, QFont.Weight.Bold))
@@ -626,7 +626,7 @@ class MainWindow(QMainWindow):
             """)
             month_btn.clicked.connect(lambda: self._buy_plan("month"))
 
-            buy_btn = QPushButton("⚡ PRO kaufen — 197 €  Lifetime")
+            buy_btn = QPushButton("⚡ PRO kaufen — 67 €  Lifetime")
             buy_btn.setFixedHeight(20)
             buy_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             buy_btn.setFont(QFont("Courier New", 8, QFont.Weight.Bold))

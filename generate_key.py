@@ -12,10 +12,10 @@ from vadox.core.license import generate_key
 def main():
     print("\n=== VADOX KEY GENERATOR (nur Entwickler-Testkeys) ===\n")
     print("Paket wählen:")
-    print("  1 = PRO Lifetime (197 EUR)")
+    print("  1 = PRO Lifetime (67 EUR)")
     print("  2 = BUSINESS Lifetime (1.497 EUR)")
     print("  3 = Developer / Test-Key")
-    print("  4 = 1 Monat (67 EUR)")
+    print("  4 = 1 Monat (9,95 EUR)")
 
     choice = input("\nWahl [1/2/3/4]: ").strip()
     email  = input("E-Mail des Kunden (leer = anonym): ").strip()
